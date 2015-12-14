@@ -1,15 +1,19 @@
 #!/usr/bin/env python
 
+import sys
+PY3 = sys.version_info > (3,)
 import re
 import csv
 import os
-import sys
-from Queue import Queue
+if PY3:
+    from queue import Queue
+else:
+    from Queue import Queue
 from threading import Thread
 from progressbar import ProgressBar, Percentage, Bar, RotatingMarker, ETA, SimpleProgress
 
 DEBUG = False
-#  DEBUG = True
+# DEBUG = True
 NUM_WORKERS = 30
 MAX_FILES = -1
 FIELD_NAMES = ['avg_word_length', 'avg_words_per_line', 'nr_lines', 'nr_different_words', 'nr_unique_words', 'has_consecutive_pagebreaks', 'id']
@@ -85,10 +89,10 @@ if __name__ == '__main__':
             txtpath = sys.argv[1]
             outfile = sys.argv[2]
         except IndexError:
-            print "Usage: %s <directory-of-text-files> <output-csv-file>" % sys.argv[0]
+            print("Usage: %s <directory-of-text-files> <output-csv-file>" % sys.argv[0])
             sys.exit(1)
 
-    print "Queuing files"
+    print("Queuing files")
     q = Queue()
     files = []
     idx = 0
@@ -104,14 +108,17 @@ if __name__ == '__main__':
     widgets = ['Analyzing: ', Percentage(), ' ', SimpleProgress(), ' ', Bar('#'), ' ', ETA()]
     bar = ProgressBar(widgets=widgets)(files)
 
-    with open(outfile, 'wb', 0) as f:
-        csv_writer = csv.DictWriter(f, fieldnames=FIELD_NAMES)
-        csv_writer.writeheader()
-        print "Starting threads (#%s)" % NUM_WORKERS
-        for i in range(NUM_WORKERS):
-            t = Thread(target=analyze_worker, args=[q, bar, csv_writer, files])
-            t.daemon = True
-            t.start()
-        q.join()
-        bar.finish()
+    if PY3:
+        f = open(outfile, 'wt', encoding='utf8', newline='')
+    else:
+        f = open(outfile, 'wb', 0)
+    csv_writer = csv.DictWriter(f, fieldnames=FIELD_NAMES)
+    csv_writer.writeheader()
+    print("Starting threads (#%s)" % NUM_WORKERS)
+    for i in range(NUM_WORKERS):
+        t = Thread(target=analyze_worker, args=[q, bar, csv_writer, files])
+        t.daemon = True
+        t.start()
+    q.join()
+    bar.finish()
 
