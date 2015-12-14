@@ -55,6 +55,7 @@ def analyze_file(filename):
         nr_lines = 0
         word_histogram = {}
         for line in f:
+            line = line.rstrip()
             word_lengths = []
             report['has_consecutive_pagebreaks'] = has_consecutive_pagebreaks(line)
             words = line.split('\x20')
