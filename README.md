@@ -38,4 +38,22 @@ Make sure the python version used in the `virtualenv` call matches
 Metrics
 -------
 
+## avg_word_length
 
+The arithmetic mean of the arithmetic mean word length per lines.
+
+## avg_words_per_line
+
+The arithmetic mean of the number of non-numeric per line.
+
+## nr_lines
+
+The number of lines in the file.
+
+## nr_different_words
+
+The number of different words in the text
+
+## nr_unique_words
+
+The number of words that appear only once
