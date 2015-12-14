@@ -57,3 +57,11 @@ The number of different words in the text
 ## nr_unique_words
 
 The number of words that appear only once
+
+## has_consecutive_pagebreaks
+
+Whether the file contains multiple consecutive pagebreaks (`^L`, `\x0c`, ascii 12)
+
+## nr_words 
+
+Total number of words

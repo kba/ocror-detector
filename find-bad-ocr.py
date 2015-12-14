@@ -16,7 +16,9 @@ DEBUG = False
 # DEBUG = True
 NUM_WORKERS = 30
 MAX_FILES = -1
-FIELD_NAMES = ['avg_word_length', 'avg_words_per_line', 'nr_lines', 'nr_different_words', 'nr_unique_words', 'has_consecutive_pagebreaks', 'id']
+FIELD_NAMES = ['avg_word_length', 'avg_words_per_line', 'nr_lines',
+    'nr_different_words', 'nr_unique_words', 'has_consecutive_pagebreaks', 'id',
+    'nr_words']
 
 def _re_matches(regex, line):
     m = re.search(regex, line)
@@ -54,12 +56,14 @@ def analyze_file(filename):
         avg_words_per_line = []
         nr_lines = 0
         word_histogram = {}
+        nr_words = 0
         for line in f:
             line = line.rstrip()
             word_lengths = []
             report['has_consecutive_pagebreaks'] = has_consecutive_pagebreaks(line)
             words = line.split('\x20')
             words_per_line = len(words)
+            nr_words += words_per_line
             if words_per_line <= 1:
                 continue
             nr_lines += 1
@@ -76,6 +80,7 @@ def analyze_file(filename):
         report['avg_word_length'] = avg(avg_word_lengths)
         report['avg_words_per_line'] = avg(avg_words_per_line)
         report['nr_lines'] = nr_lines
+        report['nr_words'] = nr_words
         report['nr_different_words'] = len(word_histogram)
         report['nr_unique_words'] = len([w for w in word_histogram if word_histogram[w] == 1])
         return report
