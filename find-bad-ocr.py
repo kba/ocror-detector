@@ -14,7 +14,7 @@ from progressbar import ProgressBar, Percentage, Bar, RotatingMarker, ETA, Simpl
 
 DEBUG = False
 # DEBUG = True
-NUM_WORKERS = 30
+NUM_WORKERS = 10
 MAX_FILES = -1
 FIELD_NAMES = ['avg_word_length', 'avg_words_per_line', 'nr_lines',
     'nr_different_words', 'nr_unique_words', 'has_consecutive_pagebreaks', 'id',
