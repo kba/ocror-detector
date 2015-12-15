@@ -65,3 +65,11 @@ Whether the file contains multiple consecutive pagebreaks (`^L`, `\x0c`, ascii 1
 ## nr_words 
 
 Total number of words
+
+## ratio_unique_words
+
+The ratio of unique words to the total number of words in a document.
+
+## ratio_word_length_to_words_per_line
+
+The ratio of the average word length to the average number of words per line.

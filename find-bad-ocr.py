@@ -18,6 +18,7 @@ NUM_WORKERS = 10
 MAX_FILES = -1
 FIELD_NAMES = ['avg_word_length', 'avg_words_per_line', 'nr_lines',
     'nr_different_words', 'nr_unique_words', 'has_consecutive_pagebreaks', 'id',
+    'ratio_unique_words', 'ratio_word_length_to_words_per_line',
     'nr_words']
 
 def _re_matches(regex, line):
@@ -83,6 +84,10 @@ def analyze_file(filename):
         report['nr_words'] = nr_words
         report['nr_different_words'] = len(word_histogram)
         report['nr_unique_words'] = len([w for w in word_histogram if word_histogram[w] == 1])
+        report['ratio_unique_words'] = report['nr_unique_words'] / float(max(1,
+                report['nr_words']))
+        report['ratio_word_length_to_words_per_line'] = report['avg_word_length'] / max(1,
+                report['avg_words_per_line'])
         return report
 
 if __name__ == '__main__':
